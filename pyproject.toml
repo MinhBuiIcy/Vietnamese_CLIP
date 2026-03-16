@@ -1,0 +1,30 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "viet-clip"
+version = "0.1.0"
+requires-python = ">=3.11"
+dependencies = [
+    "torch>=2.3.0",
+    "torchvision>=0.18.0",
+    "transformers>=4.40.0",
+    "tokenizers>=0.19.0",
+    "timm>=1.0.3",
+    "pillow>=10.3.0",
+    "numpy>=1.26.0",
+    "pandas>=2.2.0",
+    "tqdm>=4.66.0",
+    "pycocotools>=2.0.7",
+    "sentencepiece>=0.2.0",
+    "protobuf>=4.25.0",
+    "accelerate>=0.30.0",
+    "pyyaml>=6.0.1",
+    "rich>=13.7.0",
+    "tensorboard>=2.17.0",
+    "datasets>=2.19.0",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/viet_clip"]

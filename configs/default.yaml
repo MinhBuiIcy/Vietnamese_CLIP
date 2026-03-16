@@ -1,0 +1,10 @@
+batch_size: 256
+epochs: 20
+lr: 1.0e-3
+weight_decay: 1.0e-4
+warmup_epochs: 2
+grad_clip: 1.0
+embed_dim: 256
+max_caption_length: 128
+num_workers: 4
+seed: 42
