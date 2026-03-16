@@ -36,7 +36,7 @@ class VietnameseCaptionDataset(Dataset):
         if image.mode != "RGB":
             image = image.convert("RGB")
         image_tensor = self.transform(image)
-        caption = item["caption"]
+        caption = item["caption_vi"]
         image_id = item["image_id"]
         return image_tensor, caption, image_id
 
@@ -86,7 +86,7 @@ class EvalDataset:
     def __init__(self, hf_dataset) -> None:
         captions_by_id: dict[int, list[str]] = defaultdict(list)
         for item in hf_dataset:
-            captions_by_id[item["image_id"]].append(item["caption"])
+            captions_by_id[item["image_id"]].append(item["caption_vi"])
 
         self.unique_image_ids: list[int] = sorted(captions_by_id.keys())
         self.image_id_to_idx: dict[int, int] = {

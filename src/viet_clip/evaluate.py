@@ -33,26 +33,19 @@ def build_embeddings(
     model.eval()
 
     # --- Image embeddings: one per unique image ---
-    # Build a minimal dataset of one image per unique image_id
-    seen_ids: set[int] = set()
-    unique_samples: list[int] = []  # indices into image_dataset
-    image_id_order: list[int] = []
+    # Read image_id column directly from Arrow (no image decoding)
+    all_image_ids = image_dataset.data["image_id"]
+    image_id_to_dataset_idx: dict[int, int] = {}
+    for idx, iid in enumerate(all_image_ids):
+        if iid not in image_id_to_dataset_idx:
+            image_id_to_dataset_idx[iid] = idx
 
-    for idx in range(len(image_dataset)):
-        _, _, iid = image_dataset[idx]
-        if iid not in seen_ids and iid in eval_ds.image_id_to_idx:
-            seen_ids.add(iid)
-            unique_samples.append(idx)
-            image_id_order.append(iid)
-        if len(seen_ids) == len(eval_ds.unique_image_ids):
-            break
-
-    # Sort by eval_ds ordering
-    order = sorted(
-        range(len(image_id_order)),
-        key=lambda i: eval_ds.image_id_to_idx[image_id_order[i]],
-    )
-    unique_samples = [unique_samples[i] for i in order]
+    # Use eval_ds ordering
+    unique_samples = [
+        image_id_to_dataset_idx[iid]
+        for iid in eval_ds.unique_image_ids
+        if iid in image_id_to_dataset_idx
+    ]
 
     image_embs = []
     for start in range(0, len(unique_samples), batch_size):

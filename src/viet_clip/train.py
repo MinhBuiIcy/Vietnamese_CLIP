@@ -108,6 +108,7 @@ def train_one_pipeline(
         pin_memory=True,
         drop_last=True,
         collate_fn=_collate,
+        persistent_workers=True,
     )
     val_loader = DataLoader(
         val_ds,
@@ -116,6 +117,7 @@ def train_one_pipeline(
         num_workers=config.get("num_workers", 4),
         pin_memory=True,
         collate_fn=_collate,
+        persistent_workers=True,
     )
 
     # ---- Optimizer & Scheduler ----
